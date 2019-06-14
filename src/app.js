@@ -8,6 +8,7 @@ const { NODE_ENV } = require('./config');
 const winston = require('winston');
 const bookmarks = require('./bookmarks');
 const bookmarkRouter = require('./bookmark-router');
+const logger = require('./logger')
 
 const app = express();
 
@@ -16,21 +17,6 @@ const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'dev'; // change dev
 app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
-
-// set up winston
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: 'info.log' })
-  ]
-});
-
-if (NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
 
 // logger.info('am i working');
 
