@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const winston = require('winston');
 const bookmarks = require('./bookmarks');
-const router = require('./bookmark-router');
+const bookmarkRouter = require('./bookmark-router');
 
 const app = express();
 
@@ -47,9 +47,7 @@ app.use( function validateBearerToken(req, res, next) {
 });
 
 // BEGIN SENDING REQUESTS TO bookmark router
-app.use('/', (req, res) => {
-  res.status(200).send(bookmarks);
-});
+app.use('/bookmarks', bookmarkRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
