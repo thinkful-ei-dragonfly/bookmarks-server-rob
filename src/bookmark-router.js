@@ -24,18 +24,18 @@ bookmarkRouter
   .post(bodyParser, (req, res, next) => {
     const newBookmark = req.body;
     if (Object.keys(newBookmark).length === 0) {
-      logger.error = 'No bookmark data included';
+      logger.info('Cannot add, no bookmark data included');
       return res.status(400).end();
     }
     
     // VALIDATE THAT REQ FIELDS ARE PROVIDED
     if (!newBookmark.title) {
-      logger.error = 'Title required';
+      logger.info('Cannot add, title required');
       return res.status(400).end();
     }
     
     if (!newBookmark.url) {
-      logger.error = 'url required';
+      logger.info('Cannot add, url required');
       return res.status(400).end();
     }
 
@@ -61,7 +61,7 @@ bookmarkRouter.route('/:id')
     const bookmarkId = req.params.id;
     const bookmark = bookmarks.find( bookmark => bookmarkId == bookmark.id );
     if (!bookmark) {
-      logger.error = `Bookmark with id ${bookmarkId} not found.`;
+      logger.info(`Cannot retrieve data - Bookmark with id ${bookmarkId} not found.`);
       return res.status(404).send('Bookmark not found');  
     }
     return res.json(bookmark);
@@ -71,11 +71,11 @@ bookmarkRouter.route('/:id')
     const bookmarkIdx = bookmarks.findIndex( bookmark => bookmarkId == bookmark.id );
     if (bookmarkIdx === -1) {
       // console.error??
-      logger.error = `Bookmark with id ${bookmarkId} not found.`;
+      logger.info(`Cannot delete, Bookmark with id ${bookmarkId} not found.`);
       return res.status(404).send('Bookmark not found');  
     }
     bookmarks.splice(bookmarkIdx, 1);
-    logger.info = `List with id ${bookmarkId} deleted.`;
+    logger.info(`Bookmark with id ${bookmarkId} deleted.`);
     return res.status(204).end();
   });
 
